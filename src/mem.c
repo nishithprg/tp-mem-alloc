@@ -10,27 +10,13 @@
 static fb *fb_head;
 // static al al_head;
 
-// static int set_bit_bloc_alloc(size_t taille_bloc){
-//     return taille_bloc & 0xFFFF;
-// }
-
-// static int set_bit_bloc_free(size_t taille_bloc){
-//     return taille_bloc & (0xFFFF >> 1);
-// }
-
-static int get_bit_bloc(size_t taille_bloc){
-    return taille_bloc >> 31;
-}
-
 void mem_init() {
     // mem_fit_function_t * arg = &mem_first_fit;
     // mem_fit(arg);
     void * memory = get_memory_adr();
     fb_head = (fb *)memory;
-    size_t * first_byte = memory;
-    *first_byte = get_memory_size();
-    fb *tmp = memory + sizeof(size_t);
-    *tmp = NULL;
+    fb_head->taille_bloc = get_memory_size();
+    fb_head->next = NULL;
     return;
 }
 
