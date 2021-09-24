@@ -51,7 +51,7 @@ void *mem_alloc(size_t size) {
         prec = tmp;
     size_t padding_size = 0;
     // Add padding
-    // INCLUDE IN REPORT : we tried we modulo 4, line 72 writes 8 bytes to 4 alloc req and hence overiting taille_bloc of fb_head
+    // INCLUDE IN REPORT : we tried we modulo 4, line 72 writes 8 bytes to 4 alloc req and  hence overiting taille_bloc of fb_head hehe
     if(size % 8 != 0)
         padding_size = 8 - (size % 8); 
     // Check for enough place to add a Freeblock header and atleast one byte for allocation
