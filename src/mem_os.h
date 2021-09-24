@@ -1,14 +1,18 @@
 #if !defined(mem_os_h)
 #define mem_os_h
 
-typedef struct fb {
+typedef struct fb fb;
+
+struct fb {
     size_t taille_bloc;
     fb * next;
-} fb;
+};
 
-typedef struct al {
+typedef struct al al;
+
+struct al {
     int taille_bloc;
-} al;
+};
 
 /* -----------------------------------------------*/
 /* Interface de gestion de votre allocateur       */
