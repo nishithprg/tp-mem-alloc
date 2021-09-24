@@ -41,16 +41,14 @@ void mem_free(void *zone) {
 // mem_show
 //-------------------------------------------------------------
 void mem_show(void (*print)(void *, size_t, int free)) {
-    void * tmp = get_memory_adr();
-    while(tmp != NULL && tmp != get_memory_adr() + get_memory_size()){
-        if(get_bit_bloc((size_t)tmp)){
-            fb * fb_tmp = (fb *)tmp;
-            print(tmp, fb_tmp->taille_bloc, 1);
-            tmp = fb_tmp->next;
+    void * curr_byte_addr = get_memory_adr();
+    fb * free_bloc_tmp = fb_head; 
+    while(free_bloc_tmp != NULL && (curr_byte_addr != get_memory_adr() + get_memory_size())){
+        if(curr_byte_addr == (void *)free_bloc_tmp){
+            print((void *)free_bloc_tmp, free_bloc_tmp->taille_bloc, 1);
+            curr_byte_addr = (void *)free_bloc_tmp->next + (free_bloc_tmp->taille_bloc - sizeof(size_t));
         } else {
-            al * al_tmp = (al *) tmp;
-            print(tmp, al_tmp->taille_bloc, 0);
-            tmp = tmp + ((al *)tmp)->taille_bloc;
+            
         }
     } 
     return;
