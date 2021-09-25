@@ -78,7 +78,45 @@ void *mem_alloc(size_t size) {
 // mem_free
 //-------------------------------------------------------------
 void mem_free(void *zone) {
+    //Address of the zone that needs to be freed
+    fb * tmp = fb_head;
+    fb * prec = NULL;
+    // We search where the zone to free is
+    while(tmp != NULL && ((void *) tmp+tmp->taille_bloc < zone)){
+        
+        prec = tmp;
+        tmp = tmp->next;
+    }
+
+    if(tmp == NULL)
+        tmp = prec;
+
+
+    int flg_contigue = 0;
+    // Left fusion
+    if((void *)tmp + tmp->taille_bloc == zone){
+        flg_contigue = 1;
+        init_fb_header(tmp, tmp->taille_bloc + ((al *) zone)->taille_bloc, tmp->next );
+
+    }
+    // Right fusion
+    if(tmp->next != NULL){
+        if(tmp->next == zone + ((al *) zone)->taille_bloc){
+            if(flg_contigue){
+                init_fb_header(tmp, tmp->taille_bloc + tmp->next->taille_bloc, tmp->next->next);
+            }else{
+                tmp->next = init_fb_header(zone, ((al *)zone)->taille_bloc + tmp->next->taille_bloc, tmp->next->next);
+            }
+            flg_contigue++;
+        }
+    }
     
+    // No fusion
+    if(!flg_contigue){
+        tmp->next = init_fb_header(zone, ((al *) zone)->taille_bloc, tmp->next );
+    }
+
+        
     return;
 }
 
