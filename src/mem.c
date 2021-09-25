@@ -23,9 +23,8 @@ void mem_init() {
     mem_fit_function_t * arg = &mem_first_fit;
     mem_fit(arg);
     void * memory = get_memory_adr();
-    fb_head = (fb *)memory;
-    fb_head->taille_bloc = get_memory_size();
-    fb_head->next = NULL;
+    memory = init_fb_header(memory, get_memory_size(), NULL);
+    fb_head = memory;
     return;
 }
 
@@ -52,13 +51,13 @@ void *mem_alloc(size_t size) {
     size_t padding_size = 0;
     // Add padding
     // INCLUDE IN REPORT : we tried we modulo 4, line 72 writes 8 bytes to 4 alloc req and  hence overiting taille_bloc of fb_head hehe
-    if(size % 8 != 0)
-        padding_size = 8 - (size % 8); 
+    if((size + sizeof(size_t)) % 8 != 0)
+        padding_size = 8 - ((size+sizeof(size_t)) % 8); 
     // Check for enough place to add a Freeblock header and atleast one byte for allocation
     if((bloc_size - (size+padding_size)) < (sizeof(fb) + 1)){
         padding_size = bloc_size - size;
     }
-    size_t offset = size+padding_size;
+    size_t offset = size+padding_size + sizeof(size_t);
     // size_t offset = size;
     
     // Change fb_head if first bloc is allocated
@@ -78,41 +77,41 @@ void *mem_alloc(size_t size) {
 // mem_free
 //-------------------------------------------------------------
 void mem_free(void *zone) {
-    //Address of the zone that needs to be freed
-    fb * tmp = fb_head;
-    fb * prec = NULL;
-    // We search where the zone to free is
-    while(tmp != NULL && ((void *) tmp+tmp->taille_bloc < zone)){
-        
-        prec = tmp;
-        tmp = tmp->next;
+    fb * tmp;
+    // 
+    if(zone < (void *)fb_head){
+        fb_head = init_fb_header(zone, ((al *)zone)->taille_bloc, fb_head);
+        tmp = fb_head;
+    } else {
+        tmp = fb_head;
+        fb * prec = NULL;
+        // We search where the zone to free is
+        while(tmp != NULL && ((void *) tmp+tmp->taille_bloc > zone)){
+            prec = tmp;
+            tmp = tmp->next;
+        }
+
+        if(tmp == NULL)
+            tmp = prec;
     }
 
-    if(tmp == NULL)
-        tmp = prec;
-
-
-    int flg_contigue = 0;
+    int flag_contiguous = 0;
     // Left fusion
     if((void *)tmp + tmp->taille_bloc == zone){
-        flg_contigue = 1;
         init_fb_header(tmp, tmp->taille_bloc + ((al *) zone)->taille_bloc, tmp->next );
-
+        flag_contiguous++;
     }
+
     // Right fusion
     if(tmp->next != NULL){
         if(tmp->next == zone + ((al *) zone)->taille_bloc){
-            if(flg_contigue){
-                init_fb_header(tmp, tmp->taille_bloc + tmp->next->taille_bloc, tmp->next->next);
-            }else{
-                tmp->next = init_fb_header(zone, ((al *)zone)->taille_bloc + tmp->next->taille_bloc, tmp->next->next);
-            }
-            flg_contigue++;
+            init_fb_header(tmp, tmp->taille_bloc + tmp->next->taille_bloc, tmp->next->next);
+            flag_contiguous++;
         }
     }
     
-    // No fusion
-    if(!flg_contigue){
+    // No fusion -- DOESNT WORK
+    if(!flag_contiguous){
         tmp->next = init_fb_header(zone, ((al *) zone)->taille_bloc, tmp->next );
     }
 
