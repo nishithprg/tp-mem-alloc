@@ -11,7 +11,7 @@ struct fb {
 typedef struct al al;
 
 struct al {
-    int taille_bloc;
+    size_t taille_bloc;
 };
 
 /* -----------------------------------------------*/
