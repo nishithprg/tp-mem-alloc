@@ -75,13 +75,12 @@ int main(int argc, char **argv) {
             break;
         case 'l':
             scanf("%d", &offset);
-            mem_free(get_memory_adr() + offset);
+            if(!mem_free(get_memory_adr() + offset)?printf("Memoire liberee\n"):printf("Memory cannot be freed\n"));
             printf("Memoire liberee\n");
             break;
         case 'f':
             scanf("%d", &offset);
-            mem_free(allocations[offset - 1]);
-            printf("Memoire liberee\n");
+            if(!mem_free(allocations[offset - 1])?printf("Memoire liberee\n"):printf("Memory cannot be freed\n"));
             break;
         case 'i':
             mem_show(afficher_zone_libre);
