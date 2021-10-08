@@ -7,12 +7,6 @@
 // Change PROC_ARC to 4 only if executing on 32 bits systems.
 #define PROC_ARC 8
 
-// TO DO
-// 1. Adapt code to little endian and big endian
-
-// static fb *fb_head;
-// static mem_fit_function_t *curr_fit;
-
 // Function creates a free block header
 void * init_fb_header(void * addr, size_t size, fb * next_free_block){
     if(size == 0) return next_free_block;
@@ -93,23 +87,24 @@ void *mem_alloc(size_t size) {
     // Add extra bytes to align or extra bytes if not enough bytes for new free allocation block
     free_bloc_to_alloc->taille_bloc = offset;
 
-    return (void *)free_bloc_to_alloc;
+    return ((void *)free_bloc_to_alloc)+sizeof(al);
 }
 
 //-------------------------------------------------------------
 // mem_free
 //-------------------------------------------------------------
 int mem_free(void *zone) {
+    zone = zone - sizeof(al);
     mem_header * m_header = get_memory_adr();
     // No blocks to free
-    if(m_header->fb_head != NULL && m_header->fb_head->taille_bloc == get_memory_size()) return 1;
+    if(m_header->fb_head != NULL && m_header->fb_head->taille_bloc == get_memory_size()-sizeof(mem_header)) return 1;
     // zone is not an allocated adress
     if(!mem_walk(NULL, zone)) return 1;
 
     fb * tmp;
     int flag_contiguous = 0;
     
-    // Case when zone is before first free block, need to update fb_head
+    // Case when zone is before first free block or memory is fully allocated, need to update fb_head
     if(m_header->fb_head == NULL || zone < (void *)m_header->fb_head){
         m_header->fb_head = init_fb_header(zone, ((al *)zone)->taille_bloc, m_header->fb_head);
         tmp = m_header->fb_head;
@@ -118,7 +113,7 @@ int mem_free(void *zone) {
     // Find the preceding free block to zone
         tmp = m_header->fb_head;
         fb * prec = NULL;
-        while(tmp != NULL && ((void *) tmp+tmp->taille_bloc > zone)){
+        while(tmp != NULL && (((void *) tmp)+tmp->taille_bloc > zone)){
             prec = tmp;
             tmp = tmp->next;
         }
@@ -128,7 +123,7 @@ int mem_free(void *zone) {
     }
 
     // Left fusion
-    if((void *)tmp + tmp->taille_bloc == zone){
+    if(((void *)tmp) + tmp->taille_bloc == zone){
         tmp = init_fb_header(tmp, tmp->taille_bloc + ((al *) zone)->taille_bloc, tmp->next );
         flag_contiguous++;
     }
@@ -141,7 +136,7 @@ int mem_free(void *zone) {
 
     // Right fusion
     if(tmp->next != NULL){
-        if(tmp->next == ((void *)tmp + tmp->taille_bloc))
+        if(tmp->next == (((void *)tmp) + tmp->taille_bloc))
             tmp = init_fb_header(tmp, tmp->taille_bloc + tmp->next->taille_bloc, tmp->next->next);
     }
     
