@@ -6,6 +6,25 @@
 
 // Change PROC_ARC to 4 only if executing on 32 bits systems.
 #define PROC_ARC 8
+// 1 if adress are ascending, 0 otherwise; important for adress comparision
+int adress_order;
+
+// Analyse adress order on the executing machine]
+void set_adress_order(){
+    void * memory = get_memory_adr();
+    if(((memory+1) - memory) > 0)
+        adress_order = 1;
+    else 
+        adress_order = 0;
+}
+
+// Return 1 if adr1 comes before adr2, 0 otherwise
+int compare_adresses(const void * adr1, const void * adr2){
+    if(adress_order)
+        return adr1 < adr2;
+    else
+        return adr2 < adr1;
+}
 
 // Function creates a free block header
 void * init_fb_header(void * addr, size_t size, fb * next_free_block){
@@ -35,7 +54,7 @@ void mem_init() {
     // mem_fit_function_t * arg = &mem_first_fit;
     // mem_fit_function_t * arg = &mem_worst_fit;
     mem_fit_function_t * arg = &mem_best_fit;
-    
+    set_adress_order();
 
     void * memory = get_memory_adr();
     mem_header * m_head = memory;
@@ -105,7 +124,7 @@ int mem_free(void *zone) {
     int flag_contiguous = 0;
     
     // Case when zone is before first free block or memory is fully allocated, need to update fb_head
-    if(m_header->fb_head == NULL || zone < (void *)m_header->fb_head){
+    if(m_header->fb_head == NULL || compare_adresses(zone, (void *)m_header->fb_head)){
         m_header->fb_head = init_fb_header(zone, ((al *)zone)->taille_bloc, m_header->fb_head);
         tmp = m_header->fb_head;
         flag_contiguous++;
@@ -113,7 +132,7 @@ int mem_free(void *zone) {
     // Find the preceding free block to zone
         tmp = m_header->fb_head;
         fb * prec = NULL;
-        while(tmp != NULL && (((void *) tmp)+tmp->taille_bloc > zone)){
+        while(tmp != NULL && compare_adresses(zone, ((void *) tmp)+tmp->taille_bloc)){ //(((void *) tmp)+tmp->taille_bloc > zone)
             prec = tmp;
             tmp = tmp->next;
         }
