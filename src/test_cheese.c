@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define NB_TESTS 5
 #define NB_MAX_STORES 100
@@ -37,8 +38,13 @@ void store_or_check(void *adr) {
     if (nb_allocs < NB_MAX_STORES) {
         if (first)
             allocs[nb_allocs++] = adr;
-        else
+        else{
+            if(!(allocs[nb_allocs] == adr)){
+                printf("Assert errr : %p,\t", allocs[nb_allocs]);
+                printf("Adr : %p\n", adr);
+            }
             assert(allocs[nb_allocs++] == adr);
+        }
     }
 }
 
@@ -61,6 +67,18 @@ void alloc_fun(int n) {
 
 int main(int argc, char *argv[]) {
     mem_init();
+    if (argc == 2) {
+        if (strcmp(argv[1], "first") == 0) {
+            mem_fit(mem_first_fit);
+            printf("Stratégie first fit\n");
+        } else if (strcmp(argv[1], "best") == 0) {
+            mem_fit(mem_best_fit);
+            printf("Stratégie best fit\n");
+        } else if (strcmp(argv[1], "worst") == 0) {
+            mem_fit(mem_worst_fit);
+            printf("Stratégie worst fit\n");
+        }
+    }
     fprintf(stderr, "Test réalisant récursivement une allocation en gruyère "
                     "selon le modèle d'appel de fibonacci.\n"
                     "Définir DEBUG à la compilation pour avoir une sortie un "

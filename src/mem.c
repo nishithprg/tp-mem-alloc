@@ -72,7 +72,7 @@ void *mem_alloc(size_t size) {
     fb * free_bloc_to_alloc = curr_fit(m_header->fb_head, size);
     
     // Insufficient block size
-    if(free_bloc_to_alloc == NULL || size == 0) return NULL;
+    if(free_bloc_to_alloc == NULL || size <= 0) return NULL;
     
     size_t bloc_size = free_bloc_to_alloc->taille_bloc;
 
@@ -113,6 +113,11 @@ void *mem_alloc(size_t size) {
 // mem_free
 //-------------------------------------------------------------
 int mem_free(void *zone) {
+    // Cannot free NULL pointer
+    if(zone == NULL){
+        printf("NULL adr.\n");
+        return 1;   
+    }
     zone = zone - sizeof(al);
     mem_header * m_header = get_memory_adr();
     // No blocks to free
@@ -186,6 +191,10 @@ int mem_walk(void (*print)(void *, size_t, int free), void * allocd_addr){
                         return 1;
             } else
                 print((void *)curr_byte_addr, alloc_bloc_tmp->taille_bloc, 0);
+            if(alloc_bloc_tmp->taille_bloc  == 0){
+                printf("Erreur adr, not a header adr.\n");
+                exit(1);
+            }
             curr_byte_addr += alloc_bloc_tmp->taille_bloc; 
         }
     } 
@@ -221,26 +230,28 @@ struct fb *mem_first_fit(struct fb *fb_head, size_t size) {
 //-------------------------------------------------------------
 struct fb *mem_best_fit(struct fb *fb_head, size_t size) {
     if(fb_head == NULL) return NULL;
-    fb * curr_max = fb_head;
-    fb * tmp = fb_head->next;
+    int taille_max_curr = get_memory_size();
+    fb * curr_max = NULL;
+    fb * tmp = fb_head;
     while(tmp != NULL){
-        if((tmp->taille_bloc - size - sizeof(al)) < curr_max->taille_bloc)
+        int curr_block_diff = tmp->taille_bloc - size - sizeof(al);
+        if(curr_block_diff > 0 && curr_block_diff < taille_max_curr )
             curr_max = tmp;
         tmp = tmp->next;
     }
-    if((size + sizeof(al)) > curr_max->taille_bloc) return NULL;
     return curr_max;
 }
 //-------------------------------------------------------------
 struct fb *mem_worst_fit(struct fb *fb_head, size_t size) {
     if(fb_head == NULL) return NULL;
-    fb * curr_max = fb_head;
-    fb * tmp = fb_head->next;
+    int taille_min_curr = 0;
+    fb * curr_min = NULL;
+    fb * tmp = fb_head;
     while(tmp != NULL){
-        if(tmp->taille_bloc - size > curr_max->taille_bloc)
-            curr_max = tmp;
+        int curr_block_diff = tmp->taille_bloc - size - sizeof(al);
+        if(curr_block_diff > 0 && curr_block_diff > taille_min_curr )
+            curr_min = tmp;
         tmp = tmp->next;
     }
-    if((size + sizeof(al)) > curr_max->taille_bloc) return NULL;
-    return curr_max;
+    return curr_min;
 }

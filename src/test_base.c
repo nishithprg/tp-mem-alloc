@@ -12,7 +12,7 @@ static void *allocs[MAX_ALLOC];
 
 static int make_test() {
     int nb_alloc = 0;
-    int i = 0;
+    int i = 1;
     // On remplit la mémoire de blocs de taille croissante
     debug("Issuing a sequence of size increasing mallocs, starting from 0\n");
     while ((i < MAX_ALLOC) && ((allocs[i] = mem_alloc(i)) != NULL)) {
@@ -23,7 +23,7 @@ static int make_test() {
     nb_alloc = i;
     // On vide
     debug("Freeing all allocated memory\n");
-    while (i >= 0) {
+    while (i >= 1) {
         mem_free(allocs[i]);
         // debug("Freed %p\n", allocs[i]);
         i--;

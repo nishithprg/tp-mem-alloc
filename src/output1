@@ -1,0 +1,504 @@
+./test_init
+Test réalisant de multiples fois une initialisation suivie d'une alloc max.
+Définir DEBUG à la compilation pour avoir une sortie un peu plus verbeuse.
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+Alloced 127976 bytes at 0x5580c161e058
+
+./test_fusion
+Test réalisant divers cas de fusion (avant, arrière et double
+Définir DEBUG à la compilation pour avoir une sortie un peu plus verbeuse.
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+8TEST OK!!
+
+./test_fusion_bzero
+Test réalisant divers cas de fusion (avant, arrière et double
+Définir DEBUG à la compilation pour avoir une sortie un peu plus verbeuse.
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+Fusion avant
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x828
+Freed 0x420
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0x828
+Alloced 2048 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0xc30
+Freed 0x1038
+Fusion avant/arrière
+Alloced 1024 bytes at 0x18
+Alloced 1024 bytes at 0x420
+Alloced 1024 bytes at 0x828
+Alloced 1024 bytes at 0xc30
+Alloced 123848 bytes at 0x1038
+Freed 0x420
+Freed 0xc30
+Freed 0x828
+Alloced 3072 bytes at 0x420
+Freed 0x18
+Freed 0x420
+Freed 0x1038
+8TEST OK!!
+
+./test_cheese
+Test réalisant récursivement une allocation en gruyère selon le modèle d'appel de fibonacci.
+Définir DEBUG à la compilation pour avoir une sortie un peu plus verbeuse.
+Issuing test number 0
+Issuing test number 1
+test_cheese: test_cheese.c:46: store_or_check: Assertion `allocs[nb_allocs++] == adr' failed.
+./run_tests.sh: line 17:  5508 Aborted                 ./test_cheese
+
+./test_cheese_bzero
+Test réalisant récursivement une allocation en gruyère selon le modèle d'appel de fibonacci.
+Définir DEBUG à la compilation pour avoir une sortie un peu plus verbeuse.
+Issuing test number 0
+Issuing test number 1
+test_cheese_bzero: test_cheese_bzero.c:43: store_or_check: Assertion `allocs[nb_allocs++] == adr' failed.
+./run_tests.sh: line 20:  5509 Aborted                 ./test_cheese_bzero
+
+./test_base
+Test réalisant des series d'allocations / désallocations en ordre LIFO
+Définir DEBUG à la compilation pour avoir une sortie un peu plus verbeuse.
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x5597b4171230
+Freeing all allocated memory
+
+./test_base_bzero
+Test réalisant des series d'allocations / désallocations en ordre LIFO
+Définir DEBUG à la compilation pour avoir une sortie un peu plus verbeuse.
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+Issuing a sequence of size increasing mallocs, starting from 0
+Alloced up to 494 bytes at 0x556703d07230
+Freeing all allocated memory
+

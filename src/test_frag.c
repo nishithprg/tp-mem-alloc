@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
                (int)((char *)allocs[i] - (char *)get_memory_adr()));
         assert(allocs[i] <
                (void *)((char *)get_memory_adr() + get_memory_size()));
-
+        printf("Size allocated : %d\n", size);
         // On libère à intervalle aléatoire un bloc occupé d'adresse aléatoire
         // parmis les blocs alloué en mémoire
         if (rand() % FREQ_FREE == 0) {
@@ -50,7 +50,10 @@ int main(int argc, char *argv[]) {
             printf("Libération %d\n", free);
             assert(allocs[free] <
                    (void *)((char *)get_memory_adr() + get_memory_size()));
+            if(allocs[free] == NULL)
+                printf("Already freed, %d", free);
             mem_free(allocs[free]);
+            allocs[free] = NULL;
         }
         size = (rand() % MAX_BLOC) + 1;
         i++;

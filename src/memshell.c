@@ -81,6 +81,7 @@ int main(int argc, char **argv) {
         case 'f':
             scanf("%d", &offset);
             if(!mem_free(allocations[offset - 1])?printf("Memoire liberee\n"):printf("Memory cannot be freed\n"));
+            allocations[offset - 1] = NULL;
             break;
         case 'i':
             mem_show(afficher_zone_libre);
