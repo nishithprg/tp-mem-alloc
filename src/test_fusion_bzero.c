@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <string.h>
 
 #define MAX_ALLOC (1 << 10)
 #define NB_TESTS 5
@@ -63,10 +64,22 @@ static void free5(void **ptr) {
 }
 
 int main(int argc, char *argv[]) {
+    mem_init();
+    if (argc == 2) {
+        if (strcmp(argv[1], "first") == 0) {
+            mem_fit(mem_first_fit);
+            printf("Stratégie first fit\n");
+        } else if (strcmp(argv[1], "best") == 0) {
+            mem_fit(mem_best_fit);
+            printf("Stratégie best fit\n");
+        } else if (strcmp(argv[1], "worst") == 0) {
+            mem_fit(mem_worst_fit);
+            printf("Stratégie worst fit\n");
+        }
+    }
     printf("%ld", sizeof(void *));
     void *ptr[5];
 
-    mem_init();
     fprintf(stderr,
             "Test réalisant divers cas de fusion (avant, arrière et double\n"
             "Définir DEBUG à la compilation pour avoir une sortie un peu plus "

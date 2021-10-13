@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <string.h>
 
 #define MAX_ALLOC (1 << 10)
 #define NB_TESTS 10
@@ -34,9 +35,22 @@ static int make_test() {
 }
 
 int main(int argc, char *argv[]) {
+    mem_init();
+    if (argc == 2) {
+        if (strcmp(argv[1], "first") == 0) {
+            mem_fit(mem_first_fit);
+            printf("Stratégie first fit\n");
+        } else if (strcmp(argv[1], "best") == 0) {
+            mem_fit(mem_best_fit);
+            printf("Stratégie best fit\n");
+        } else if (strcmp(argv[1], "worst") == 0) {
+            mem_fit(mem_worst_fit);
+            printf("Stratégie worst fit\n");
+        }
+    }
     int nb_alloc;
     nb_alloc = 0;
-    mem_init();
+
     fprintf(stderr, "Test réalisant des series d'allocations / désallocations "
                     "en ordre LIFO\n"
                     "Définir DEBUG à la compilation pour avoir une sortie un "

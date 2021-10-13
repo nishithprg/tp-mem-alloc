@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <string.h>
 
 #define NB_TESTS 5
 #define NB_MAX_STORES 100
@@ -63,6 +64,18 @@ void alloc_fun(int n) {
 
 int main(int argc, char *argv[]) {
     mem_init();
+    if (argc == 2) {
+        if (strcmp(argv[1], "first") == 0) {
+            mem_fit(mem_first_fit);
+            printf("Stratégie first fit\n");
+        } else if (strcmp(argv[1], "best") == 0) {
+            mem_fit(mem_best_fit);
+            printf("Stratégie best fit\n");
+        } else if (strcmp(argv[1], "worst") == 0) {
+            mem_fit(mem_worst_fit);
+            printf("Stratégie worst fit\n");
+        }
+    }
     fprintf(stderr, "Test réalisant récursivement une allocation en gruyère "
                     "selon le modèle d'appel de fibonacci.\n"
                     "Définir DEBUG à la compilation pour avoir une sortie un "

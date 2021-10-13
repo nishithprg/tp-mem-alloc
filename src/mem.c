@@ -26,6 +26,14 @@ int compare_adresses(const void * adr1, const void * adr2){
         return adr2 < adr1;
 }
 
+// Return address offset bytes before adr1
+void * address_substraction(void * adr1, size_t offset){
+    if(adress_order)
+        return adr1 - offset;
+    else
+        return adr1 + offset;
+}
+
 // Function creates a free block header
 void * init_fb_header(void * addr, size_t size, fb * next_free_block){
     if(size == 0) return next_free_block;
@@ -35,14 +43,17 @@ void * init_fb_header(void * addr, size_t size, fb * next_free_block){
     return (void *)new_free_bloc_header;
 }
 
+// Return pointer to mem_header
 mem_header * get_mem_header(){
     return (mem_header *)get_memory_adr();
 }
 
+// Return pointer of fb_head
 fb * get_fb_head(){
     return ((mem_header *)get_memory_adr())->fb_head;
 }
 
+// Return pointer of current fit strategy function
 mem_fit_function_t * get_curr_fit(){
     return ((mem_header *)get_memory_adr())->curr_fit;
 }
@@ -51,8 +62,6 @@ mem_fit_function_t * get_curr_fit(){
 // mem_init
 //-------------------------------------------------------------
 void mem_init() {
-    // mem_fit_function_t * arg = &mem_first_fit;
-    // mem_fit_function_t * arg = &mem_worst_fit;
     mem_fit_function_t * arg = &mem_best_fit;
     set_adress_order();
 
@@ -87,7 +96,6 @@ void *mem_alloc(size_t size) {
         prec = tmp;
     size_t padding_size = 0;
     // Add padding
-    // INCLUDE IN REPORT : we tried we modulo 4, line 72 writes 8 bytes to 4 alloc req and  hence overiting taille_bloc of fb_head hehe
     if((size + sizeof(al)) % PROC_ARC != 0)
         padding_size = PROC_ARC - ((size+sizeof(al)) % PROC_ARC); 
     // Check for enough place to add a Freeblock header and atleast one byte for allocation
@@ -118,7 +126,8 @@ int mem_free(void *zone) {
         printf("NULL adr.\n");
         return 1;   
     }
-    zone = zone - sizeof(al);
+    // Get pointer of zone header
+    zone = address_substraction(zone, sizeof(al));
     mem_header * m_header = get_memory_adr();
     // No blocks to free
     if(m_header->fb_head != NULL && m_header->fb_head->taille_bloc == get_memory_size()-sizeof(mem_header)) return 1;
@@ -164,8 +173,6 @@ int mem_free(void *zone) {
             tmp = init_fb_header(tmp, tmp->taille_bloc + tmp->next->taille_bloc, tmp->next->next);
     }
     
-
-        
     return 0;
 }
 
@@ -191,10 +198,6 @@ int mem_walk(void (*print)(void *, size_t, int free), void * allocd_addr){
                         return 1;
             } else
                 print((void *)curr_byte_addr, alloc_bloc_tmp->taille_bloc, 0);
-            if(alloc_bloc_tmp->taille_bloc  == 0){
-                printf("Erreur adr, not a header adr.\n");
-                exit(1);
-            }
             curr_byte_addr += alloc_bloc_tmp->taille_bloc; 
         }
     } 
@@ -230,28 +233,32 @@ struct fb *mem_first_fit(struct fb *fb_head, size_t size) {
 //-------------------------------------------------------------
 struct fb *mem_best_fit(struct fb *fb_head, size_t size) {
     if(fb_head == NULL) return NULL;
-    int taille_max_curr = get_memory_size();
-    fb * curr_max = NULL;
-    fb * tmp = fb_head;
-    while(tmp != NULL){
-        int curr_block_diff = tmp->taille_bloc - size - sizeof(al);
-        if(curr_block_diff > 0 && curr_block_diff < taille_max_curr )
-            curr_max = tmp;
-        tmp = tmp->next;
-    }
-    return curr_max;
-}
-//-------------------------------------------------------------
-struct fb *mem_worst_fit(struct fb *fb_head, size_t size) {
-    if(fb_head == NULL) return NULL;
-    int taille_min_curr = 0;
+    size_t taille_min_curr = get_memory_size();
     fb * curr_min = NULL;
     fb * tmp = fb_head;
     while(tmp != NULL){
         int curr_block_diff = tmp->taille_bloc - size - sizeof(al);
-        if(curr_block_diff > 0 && curr_block_diff > taille_min_curr )
+        if(curr_block_diff >= 0 && curr_block_diff < taille_min_curr){
+            taille_min_curr = (size_t) curr_block_diff;
             curr_min = tmp;
+        }
         tmp = tmp->next;
     }
     return curr_min;
+}
+//-------------------------------------------------------------
+struct fb *mem_worst_fit(struct fb *fb_head, size_t size) {
+    if(fb_head == NULL) return NULL;
+    size_t taille_max_curr = 0;
+    fb * curr_max = NULL;
+    fb * tmp = fb_head;
+    while(tmp != NULL){
+        int curr_block_diff = tmp->taille_bloc - size - sizeof(al);
+        if(curr_block_diff > 0 && curr_block_diff >= taille_max_curr){
+            taille_max_curr = (size_t) curr_block_diff;
+            curr_max = tmp;
+        }
+        tmp = tmp->next;
+    }
+    return curr_max;
 }

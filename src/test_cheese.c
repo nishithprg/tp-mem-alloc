@@ -9,10 +9,15 @@
 #define NB_TESTS 5
 #define NB_MAX_STORES 100
 
+void afficher_zone(void *adresse, size_t taille, int free) {
+    printf("Zone %s, Adresse : %lu, Taille : %lu\n", free ? "libre" : "occupee",
+           (unsigned long)adresse, (unsigned long)taille);
+}
+
 void my_free(void **mem) {
     if (*mem != NULL) {
         mem_free(*mem);
-        // debug("Freed %p\n", *mem);
+        // debug("Freed %lu\n", (unsigned long)*mem);
         *mem = NULL;
     }
 }
@@ -39,10 +44,6 @@ void store_or_check(void *adr) {
         if (first)
             allocs[nb_allocs++] = adr;
         else{
-            if(!(allocs[nb_allocs] == adr)){
-                printf("Assert errr : %p,\t", allocs[nb_allocs]);
-                printf("Adr : %p\n", adr);
-            }
             assert(allocs[nb_allocs++] == adr);
         }
     }
@@ -64,6 +65,7 @@ void alloc_fun(int n) {
     my_free(&c);
     my_free(&b);
 }
+
 
 int main(int argc, char *argv[]) {
     mem_init();
@@ -87,6 +89,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < NB_TESTS; i++) {
         debug("Issuing test number %d\n", i);
         alloc_fun(6);
+        mem_show(afficher_zone);
         reset();
     }
 
